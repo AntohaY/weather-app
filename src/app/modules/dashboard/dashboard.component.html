@@ -1,0 +1,13 @@
+<mat-divider></mat-divider>
+
+<br>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="weather-cards-container">
+  <div *ngFor="let forecast of forecasts">
+    <app-weather-card></app-weather-card>
+  </div>
+</div>
+
+<br>
+
+<mat-divider></mat-divider>
