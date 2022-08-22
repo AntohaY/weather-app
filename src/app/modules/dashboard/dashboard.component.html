@@ -1,13 +1,16 @@
 <mat-divider></mat-divider>
 
+<div>
+  <input type="text" [(ngModel)]="forecast">
+  <button (click)="addForecast()"></button>
+</div>
 <br>
 
 <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="weather-cards-container">
-  <div *ngFor="let forecast of forecasts">
-    <app-weather-card></app-weather-card>
+  <div *ngFor="let forecast of allForecasts$ | async">
+    <app-weather-card (removeForecastEvent)="removeForecast($event)" [weatherForecast]="forecast"></app-weather-card>
   </div>
 </div>
-
 <br>
 
 <mat-divider></mat-divider>

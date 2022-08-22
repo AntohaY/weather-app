@@ -6,6 +6,7 @@ import { DashboardComponent } from 'src/app/modules/dashboard/dashboard.componen
 import { DashboardService } from '../../modules/dashboard/dashboard.service'
 import { RouterModule } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -14,13 +15,14 @@ import { MatDividerModule } from '@angular/material/divider';
     DefaultComponent,
     DashboardComponent
   ],
-  imports: [
-    RouterModule,
-    CommonModule,
-    SharedModule,
-    MatDividerModule,
+    imports: [
+        RouterModule,
+        CommonModule,
+        SharedModule,
+        MatDividerModule,
+        FormsModule,
 
-  ],
+    ],
   providers: [
     DashboardService
   ]
