@@ -2,13 +2,13 @@
 
 <div>
   <input type="text" [(ngModel)]="forecast">
-  <button (click)="addForecast()"></button>
+  <button mat-raised-button color="primary" (click)="addForecast()">Add city</button>
 </div>
 <br>
 
 <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" class="weather-cards-container">
   <div *ngFor="let forecast of allForecasts$ | async">
-    <app-weather-card (removeForecastEvent)="removeForecast($event)" [weatherForecast]="forecast"></app-weather-card>
+    <app-forecast (removeForecastEvent)="removeForecast($event)" [weatherForecast]="forecast"></app-forecast>
   </div>
 </div>
 <br>

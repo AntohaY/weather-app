@@ -3,11 +3,11 @@ import { Forecast } from '../../models/forecast/forecast.model';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-weather-card',
-  templateUrl: './weather-card.component.html',
-  styleUrls: ['./weather-card.component.scss']
+  selector: 'app-forecast',
+  templateUrl: './forecast.component.html',
+  styleUrls: ['./forecast.component.scss']
 })
-export class WeatherCardComponent implements OnInit {
+export class ForecastComponent implements OnInit {
 
   currentDateTime!: string;
   @Input() weatherForecast!: Forecast;

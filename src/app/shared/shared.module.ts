@@ -5,14 +5,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDividerModule } from '@angular/material/divider';
-import { WeatherCardComponent } from './widgets/weather-card/weather-card.component';
+import { ForecastComponent } from './widgets/forecast/forecast.component';
 import { MatCardModule } from '@angular/material/card';
+import {MatButtonModule} from "@angular/material/button";
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    WeatherCardComponent
+    ForecastComponent
   ],
   imports: [
     CommonModule,
@@ -20,11 +21,12 @@ import { MatCardModule } from '@angular/material/card';
     MatToolbarModule,
     FlexLayoutModule,
     MatDividerModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonModule
   ],
   exports: [
     HeaderComponent,
-    WeatherCardComponent
+    ForecastComponent
   ],
   providers: [
     DatePipe

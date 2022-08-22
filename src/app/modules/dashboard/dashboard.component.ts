@@ -15,7 +15,6 @@ export class DashboardComponent implements OnInit {
   // @ts-ignore
   public allForecasts$ = this.store.select(selectAllForecasts);
   public forecast = ''
-  public test = 'haha';
 
   constructor(
     private store: Store
@@ -26,7 +25,8 @@ export class DashboardComponent implements OnInit {
   }
 
   addForecast(): void {
-    this.store.dispatch(addForecast({ cityName: this.forecast }));
+    if (this.forecast.length)
+      this.store.dispatch(addForecast({ cityName: this.forecast }));
     this.forecast = '';
   }
 
