@@ -19,7 +19,8 @@ export interface DailyForecast {
     max: string,
     min: string,
   }
-  wind10m_max: string
+  wind10m_max: string,
+  windDirection?: string,
 }
 
 export interface HourlyForecast {

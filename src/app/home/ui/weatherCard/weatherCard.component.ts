@@ -21,13 +21,15 @@ import { WindSpeedDescriptionPipe } from "../../../shared/pipes/windSpeed.pipe";
         <p class="mb-3 text-2xl font-bold text-yellow-300 dark:text-gray-400">
           Min temperature {{ weatherInfo().temp2m.min }}° C
         </p>
-        <div class="flex item-center">
+        <div class="flex item-center flex-col">
           <p class="mb-3 text-2xl font-normal text-blue-600 dark:text-gray-400">
             Wind speed: {{ +weatherInfo().wind10m_max | windSpeedDescription}}
           </p>
-          <!-- <p class="mb-3 text-2xl font-normal text-red-600 dark:text-gray-400">
-            Expected precipitation: {{ weatherInfo().prec_amount }} mm
-          </p> -->
+          @if (weatherInfo().windDirection) {
+            <p class="mb-3 text-2xl font-normal text-blue-600 dark:text-gray-400">
+              Aproximate wind direction: {{ weatherInfo().windDirection}}
+            </p>
+          }
         </div>
         <app-icon [weatherCondition]="weatherInfo().weather"></app-icon>
       </div>

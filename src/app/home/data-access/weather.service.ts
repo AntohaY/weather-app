@@ -75,6 +75,11 @@ export class WeatherService {
                 ),
                 map((response) => {
                   const sevenDayForecast = response[0].dataseries;
+                  let indexCounter = 4;
+                  sevenDayForecast.forEach((df) => {
+                    df.windDirection = response[1].dataseries[indexCounter].wind10m.direction;
+                    indexCounter+=7;
+                  })
                   const fiveDaysGraph = {
                     initialTimePoint: response[1].init,
                     data: response[1].dataseries.slice(0, (5 * 8))
