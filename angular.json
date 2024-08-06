@@ -24,7 +24,9 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets",
+              "src/assets/weather_icons"
             ],
             "styles": [
               "src/styles.css"
@@ -82,7 +84,9 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets",
+              "src/assets/weather_icons"
             ],
             "styles": [
               "src/styles.css"

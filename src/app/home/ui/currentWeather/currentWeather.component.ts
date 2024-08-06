@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { DailyForecast } from '../../interfaces/weather';
+import { IconComponent } from '../icon/icon.component';
+import { WeatherCardComponent } from '../weatherCard/weatherCard.component';
 
 @Component({
     standalone: true,
-    imports: [],
+    imports: [IconComponent, WeatherCardComponent],
     selector: 'app-current-weather',
     templateUrl: 'currentWeather.component.html'
 })
 
 export class CurrentWeatherComponent {
-
-    constructor() {
-        
-    }
+  currentWeather = input.required<DailyForecast>();
 }
