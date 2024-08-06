@@ -6,6 +6,12 @@ export interface ApiResponse {
   product: string
 }
 
+export interface CivilApiResponse {
+  dataseries: HourlyForecast[],
+  init: string,
+  product: string
+}
+
 export interface DailyForecast {
   date: string,
   weather: string,
@@ -16,13 +22,17 @@ export interface DailyForecast {
   wind10m_max: string
 }
 
-export interface sevenDayForecast {
-
-}
-
-export interface oneDayForecast {
-  minTemp: string,
-  maxTemp: string,
-  avgWindSpeed: string,
-  windDirection: string,
+export interface HourlyForecast {
+  timepoint: string,
+  cloudcover: string,
+  lifted_index: string,
+  prec_type: string,
+  prec_amount: string,
+  temp2m: string,
+  rh2m: string,
+  wind10m : {
+    direction : string,
+    speed : string
+  },
+  weather: string
 }

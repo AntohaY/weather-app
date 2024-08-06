@@ -1,7 +1,7 @@
-<section>
-  <div class="md:container md:mx-auto px-4 py-4 flex justify-center flex-col items-center">
+
+  <div class="md:container md:mx-auto px-4 py-4 flex-auto justify-center">
     @defer {
-      <section class="p-6">
+      <section class="flex justify-center p-6">
         <app-current-weather [currentWeather]="weatherService.weatherData().sevenDayForecast[0]"></app-current-weather>
       </section>
 
@@ -9,6 +9,10 @@
         <app-seven-day-forecast [sevenDayForecast]="weatherService.weatherData().sevenDayForecast">
 
         </app-seven-day-forecast>
+      </section>
+
+      <section>
+        <app-five-days-graph [graphData]="weatherService.weatherData().fiveDaysGraph.data" [initTimePoint]="weatherService.weatherData().fiveDaysGraph.initialTimePoint"></app-five-days-graph>
       </section>
     } @placeholder (minimum 2000ms) {
       <div role="status">
@@ -20,4 +24,4 @@
       </div>
     }
   </div>
-</section>
+

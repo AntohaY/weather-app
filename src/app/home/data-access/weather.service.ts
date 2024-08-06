@@ -1,13 +1,17 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, EMPTY, map, of, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { LocationService } from '../../shared/data-access/location.service';
-import { ApiResponse, DailyForecast } from '../interfaces/weather';
+import { ApiResponse, CivilApiResponse, DailyForecast, HourlyForecast } from '../interfaces/weather';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface WeatherState {
   weatherData: {
     sevenDayForecast: DailyForecast[],
+    fiveDaysGraph: {
+        initialTimePoint: string,
+        data: HourlyForecast[]
+    }
   };
   loaded: boolean;
 }
@@ -22,6 +26,10 @@ export class WeatherService {
     private state = signal<WeatherState>({
         weatherData: {
           sevenDayForecast: [],
+          fiveDaysGraph: {
+            initialTimePoint: '',
+            data: []
+          }
         },
         loaded: false,
     })
@@ -32,13 +40,23 @@ export class WeatherService {
         })
     )
 
-    private fetchWeatherDataFromApi(
+    private fetchSevenDaysWeatherDataFromApi(
         long: string,
         lat: string
     ) {
         return this.httpClient
           .get<ApiResponse>(
               `http://www.7timer.info/bin/api.pl?lon=${long}&lat=${lat}&product=civillight&output=json`
+          )
+    }
+
+    private fetchGraphDataFromApi(
+        long: string,
+        lat: string
+    ) {
+        return this.httpClient
+          .get<CivilApiResponse>(
+              `http://www.7timer.info/bin/api.pl?lon=${long}&lat=${lat}&product=civil&output=json`
           )
     }
 
@@ -53,14 +71,17 @@ export class WeatherService {
             .pipe(
                 takeUntilDestroyed(),
                 switchMap((coordinates) =>
-                  this.fetchWeatherDataFromApi(coordinates.long, coordinates.lat)
+                    forkJoin([this.fetchSevenDaysWeatherDataFromApi(coordinates.long, coordinates.lat), this.fetchGraphDataFromApi(coordinates.long, coordinates.lat)])
                 ),
                 map((response) => {
-                  // const currentDayWeather = response.dataseries.slice(0,8);
-                  const sevenDayForecast = response.dataseries;
-                  // const fiveDaysGraph = response.dataseries.slice(0, (5 * 8));
+                  const sevenDayForecast = response[0].dataseries;
+                  const fiveDaysGraph = {
+                    initialTimePoint: response[1].init,
+                    data: response[1].dataseries.slice(0, (5 * 8))
+                  };
                   return {
-                    sevenDayForecast ,
+                    sevenDayForecast,
+                    fiveDaysGraph
                   }
                 })
             )
