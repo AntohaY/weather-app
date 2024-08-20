@@ -18,7 +18,6 @@ export class IconComponent{
 
   iconPath = computed(() => {
 
-    console.log(this.weatherCondition())
     const conditionKey = this.weatherCondition() as keyof typeof WeatherConditionsIcons;
 
     return `assets/weather_icons/${WeatherConditionsIcons[conditionKey]}.svg`
