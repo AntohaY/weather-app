@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, EMPTY, forkJoin, map, of, switchMap, tap } from 'rxjs';
 import { LocationService } from '../../shared/data-access/location.service';
@@ -34,6 +34,8 @@ export class WeatherService {
         loaded: false,
     })
 
+    // Sources
+
     private coordinatesLoaded$ = this.locationService.loadCoordinates().pipe(
         catchError((err) => {
             return EMPTY;
@@ -67,38 +69,45 @@ export class WeatherService {
     weatherData = computed(() => this.state().weatherData);
 
     constructor() {
-        this.coordinatesLoaded$
-            .pipe(
-                takeUntilDestroyed(),
-                switchMap((coordinates) =>
-                    forkJoin([this.fetchSevenDaysWeatherDataFromApi(coordinates.long, coordinates.lat), this.fetchGraphDataFromApi(coordinates.long, coordinates.lat)])
-                ),
-                map((response) => {
-                  const sevenDayForecast = response[0].dataseries;
-                  let indexCounter = 4;
-                  sevenDayForecast.forEach((df) => {
-                    df.windDirection = response[1].dataseries[indexCounter].wind10m.direction;
-                    indexCounter+=7;
-                  })
-                  const fiveDaysGraph = {
-                    initialTimePoint: response[1].init,
-                    data: response[1].dataseries.slice(0, (5 * 8))
-                  };
-                  return {
-                    sevenDayForecast,
-                    fiveDaysGraph
-                  }
+      // Reducers
+      this.coordinatesLoaded$
+          .pipe(
+              takeUntilDestroyed(),
+              switchMap((coordinates) =>
+                  forkJoin([this.fetchSevenDaysWeatherDataFromApi(coordinates.long, coordinates.lat), this.fetchGraphDataFromApi(coordinates.long, coordinates.lat)])
+              ),
+              map((response) => {
+                const sevenDayForecast = response[0].dataseries;
+                let indexCounter = 4;
+                sevenDayForecast.forEach((df) => {
+                  df.windDirection = response[1].dataseries[indexCounter].wind10m.direction;
+                  indexCounter+=7;
                 })
-            )
-            .subscribe((weatherResponse) => {
-                console.log(weatherResponse);
-                // Update the state with the weather data
-                this.state.update((state) => ({
-                    ...state,
-                    weatherData: weatherResponse,
-                    loaded: true
-                  }))
-            });
+                const fiveDaysGraph = {
+                  initialTimePoint: response[1].init,
+                  data: response[1].dataseries.slice(0, (5 * 8))
+                };
+                return {
+                  sevenDayForecast,
+                  fiveDaysGraph
+                }
+              })
+          )
+          .subscribe((weatherData) =>
+            // {
+              // console.log(weatherData);
+              // Update the state with the weather data
+              this.state.update((state) => ({
+                  ...state,
+                  weatherData,
+                  loaded: true
+                }))
+          // }
+          );
+
+        effect(() => {
+          console.log(this.weatherData())
+        })
     }
 }
 

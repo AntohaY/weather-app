@@ -1,6 +1,6 @@
 
   <div class="md:container md:mx-auto px-4 py-4 flex-auto justify-center">
-    @defer {
+    @defer(when weatherService.loaded()) {
       <section class="flex justify-center p-6">
         <app-current-weather [currentWeather]="weatherService.weatherData().sevenDayForecast[0]"></app-current-weather>
       </section>
