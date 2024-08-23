@@ -74,18 +74,18 @@ export class WeatherService {
           .pipe(
               takeUntilDestroyed(),
               switchMap((coordinates) =>
-                  forkJoin([this.fetchSevenDaysWeatherDataFromApi(coordinates.long, coordinates.lat), this.fetchGraphDataFromApi(coordinates.long, coordinates.lat)])
+                forkJoin([this.fetchSevenDaysWeatherDataFromApi(coordinates.long, coordinates.lat), this.fetchGraphDataFromApi(coordinates.long, coordinates.lat)])
               ),
-              map((response) => {
-                const sevenDayForecast = response[0].dataseries;
+              map(([ApiResponse, CivilApiResponse]) => {
+                const sevenDayForecast = ApiResponse.dataseries;
                 let indexCounter = 4;
                 sevenDayForecast.forEach((df) => {
-                  df.windDirection = response[1].dataseries[indexCounter].wind10m.direction;
+                  df.windDirection = CivilApiResponse.dataseries[indexCounter].wind10m.direction;
                   indexCounter+=7;
                 })
                 const fiveDaysGraph = {
-                  initialTimePoint: response[1].init,
-                  data: response[1].dataseries.slice(0, (5 * 8))
+                  initialTimePoint: CivilApiResponse.init,
+                  data: CivilApiResponse.dataseries.slice(0, (5 * 8))
                 };
                 return {
                   sevenDayForecast,
